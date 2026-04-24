@@ -114,6 +114,8 @@ function sanitizeQuery(query) {
 }
 
 // ─── HTTP CLIENT SEGURO (sem axios, fetch nativo) ────────────────────────────
+// Se body for string, envia como text/markdown (conteúdo de nota raw).
+// Se for objeto, serializa como application/json.
 async function obsidianRequest(method, endpoint, body = null) {
   const url = `${CONFIG.host}:${CONFIG.port}${endpoint}`;
 
@@ -123,15 +125,18 @@ async function obsidianRequest(method, endpoint, body = null) {
     throw new Error("Host não permitido — apenas localhost (A05)");
   }
 
+  const isRawString = typeof body === "string";
   const options = {
     method,
     headers: {
       "Authorization": `Bearer ${CONFIG.apiKey}`,
-      "Content-Type": "application/json",
+      "Content-Type": isRawString ? "text/markdown" : "application/json",
     },
   };
 
-  if (body) options.body = JSON.stringify(body);
+  if (body !== null && body !== undefined) {
+    options.body = isRawString ? body : JSON.stringify(body);
+  }
 
   const res = await fetch(url, options);
 
@@ -160,8 +165,12 @@ server.tool(
     try {
       const safe = sanitizePath(notePath);
       const data = await obsidianRequest("GET", `/vault/${encodeURIComponent(safe)}`);
+      // Local REST API pode retornar string raw (text/markdown) ou JSON {content: ...}
+      const text = typeof data === "string"
+        ? data
+        : (data && typeof data.content === "string" ? data.content : JSON.stringify(data));
       audit("read_note", { path: safe }, "ok");
-      return { content: [{ type: "text", text: typeof data === "string" ? data : JSON.stringify(data) }] };
+      return { content: [{ type: "text", text }] };
     } catch (e) {
       audit("read_note", { path: notePath }, null, e);
       return { content: [{ type: "text", text: `Erro: ${e.message}` }], isError: true };
@@ -205,7 +214,8 @@ server.tool(
       // Garante extensão .md
       if (!safe.endsWith(".md")) throw new Error("Arquivo deve ter extensão .md");
 
-      await obsidianRequest("PUT", `/vault/${encodeURIComponent(safe)}`, { content: safeContent });
+      // Envia o markdown como body raw (Content-Type: text/markdown)
+      await obsidianRequest("PUT", `/vault/${encodeURIComponent(safe)}`, safeContent);
       audit("create_note", { path: safe, size: Buffer.byteLength(safeContent) }, "ok");
       return { content: [{ type: "text", text: `Nota criada: ${safe}` }] };
     } catch (e) {
@@ -236,7 +246,8 @@ server.tool(
         previous = await obsidianRequest("GET", `/vault/${encodeURIComponent(safe)}`);
       } catch (_) {}
 
-      await obsidianRequest("PUT", `/vault/${encodeURIComponent(safe)}`, { content: safeContent });
+      // Envia o markdown como body raw (Content-Type: text/markdown)
+      await obsidianRequest("PUT", `/vault/${encodeURIComponent(safe)}`, safeContent);
       audit("edit_note", { path: safe, previousSize: Buffer.byteLength(previous || ""), newSize: Buffer.byteLength(safeContent) }, "ok");
       return { content: [{ type: "text", text: `Nota editada: ${safe}` }] };
     } catch (e) {

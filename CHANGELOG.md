@@ -3,6 +3,13 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.0.4] — 2026-04-24
+
+### Corrigido (crítico)
+- **`create_note` e `edit_note`** agora enviam o conteúdo da nota como body **raw** com `Content-Type: text/markdown`, como o plugin Local REST API espera. Antes o markdown era serializado como JSON `{"content": "..."}` e o plugin salvava a string escapada literalmente no arquivo — notas ficavam ilegíveis com `\n` literais e envolvidas em `{"content":"..."}`.
+- **`read_note`** tolera ambas formas de resposta do plugin (texto raw ou JSON `{content: "..."}`), extraindo o conteúdo corretamente em qualquer caso.
+- **`obsidianRequest`** agora detecta automaticamente se o body é string (envia como `text/markdown`) ou objeto (serializa como `application/json`).
+
 ## [1.0.3] — 2026-04-24
 
 ### Corrigido
