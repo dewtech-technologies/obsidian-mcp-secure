@@ -3,6 +3,11 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.0.3] — 2026-04-24
+
+### Corrigido
+- `search_notes` agora envia `query` e `contextLength` via query string, como o plugin Local REST API do Obsidian exige no endpoint `POST /search/simple/`. Antes estavam indo no body JSON, resultando em `400 Bad Request` ("A single '?query=' parameter is required").
+
 ## [1.0.2] — 2026-04-24
 
 ### Corrigido

@@ -287,10 +287,14 @@ server.tool(
   async ({ query, limit }) => {
     try {
       const safeQuery = sanitizeQuery(query);
+      // Plugin Local REST API exige query string, nao body JSON
+      const params = new URLSearchParams({
+        query: safeQuery,
+        contextLength: "200",
+      });
       const data = await obsidianRequest(
         "POST",
-        "/search/simple/",
-        { query: safeQuery, contextLength: 200 }
+        `/search/simple/?${params.toString()}`
       );
 
       const results = Array.isArray(data) ? data.slice(0, limit) : data;
