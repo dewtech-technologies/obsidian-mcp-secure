@@ -3,6 +3,11 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.0.1] — 2026-04-24
+
+### Adicionado
+- Campo `mcpName` no `package.json` exigido pelo MCP Registry oficial da Anthropic para vincular o pacote npm ao namespace `io.github.dewtech-technologies/obsidian-mcp-secure`
+
 ## [1.0.0] — 2026-04-19
 
 ### Adicionado
