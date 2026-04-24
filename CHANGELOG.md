@@ -3,6 +3,11 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.0.2] — 2026-04-24
+
+### Corrigido
+- **Crítico:** removidos 3 bytes espúrios (`-e ` literal) no início de `src/server.js` que vieram de um `echo -e` mal escapado durante a criação do arquivo. Isso fazia o Node interpretar a primeira linha como código JavaScript em vez de shebang, quebrando a execução via `npx`/`node` — clientes MCP recebiam "Server disconnected" imediatamente após o handshake `initialize`.
+
 ## [1.0.1] — 2026-04-24
 
 ### Adicionado

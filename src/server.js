@@ -1,4 +1,4 @@
--e #!/usr/bin/env node
+#!/usr/bin/env node
 /**
  * Obsidian MCP Server — Seguro (OWASP Top 10)
  * 
