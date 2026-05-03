@@ -2,36 +2,33 @@
 
 startCommand:
   type: stdio
-
-configSchema:
-  type: object
-  required:
-    - apiKey
-  properties:
-    apiKey:
-      type: string
-      description: "API key from the Obsidian Local REST API plugin (Settings → Community Plugins → Local REST API → API Key)"
-    host:
-      type: string
-      description: "Host of the Obsidian Local REST API. Only 127.0.0.1 and localhost are accepted."
-      default: "http://127.0.0.1"
-    port:
-      type: number
-      description: "Port of the Obsidian Local REST API plugin."
-      default: 27123
-
-commandFunction: |-
-  (config) => ({
-    command: "npx",
-    args: ["-y", "obsidian-mcp-secure"],
-    env: {
-      OBSIDIAN_API_KEY: config.apiKey || "scan-placeholder",
-      OBSIDIAN_HOST: config.host || "http://127.0.0.1",
-      OBSIDIAN_PORT: String(config.port || 27123)
-    }
-  })
-
-exampleConfig:
-  apiKey: "your-obsidian-api-key"
-  host: "http://127.0.0.1"
-  port: 27123
+  configSchema:
+    type: object
+    required:
+      - apiKey
+    properties:
+      apiKey:
+        type: string
+        description: "API key from the Obsidian Local REST API plugin (Settings → Community Plugins → Local REST API → API Key)"
+      host:
+        type: string
+        description: "Host of the Obsidian Local REST API. Only 127.0.0.1 and localhost are accepted."
+        default: "http://127.0.0.1"
+      port:
+        type: number
+        description: "Port of the Obsidian Local REST API plugin."
+        default: 27123
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "obsidian-mcp-secure"],
+      env: {
+        OBSIDIAN_API_KEY: config.apiKey,
+        OBSIDIAN_HOST: config.host || "http://127.0.0.1",
+        OBSIDIAN_PORT: String(config.port || 27123)
+      }
+    })
+  exampleConfig:
+    apiKey: "dummy-key-for-scan"
+    host: "http://127.0.0.1"
+    port: 27123
