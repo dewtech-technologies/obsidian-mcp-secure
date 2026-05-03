@@ -5,6 +5,8 @@
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-5A67D8)](https://registry.modelcontextprotocol.io)
 [![license](https://img.shields.io/npm/l/obsidian-mcp-secure)](LICENSE)
 [![npm audit](https://img.shields.io/badge/npm%20audit-0%20vulnerabilities-brightgreen)](package.json)
+[![CI](https://github.com/dewtech-technologies/obsidian-mcp-secure/actions/workflows/ci.yml/badge.svg)](https://github.com/dewtech-technologies/obsidian-mcp-secure/actions/workflows/ci.yml)
+[![coverage](https://img.shields.io/badge/coverage-unit%20tested-brightgreen)](test/)
 
 > Secure Model Context Protocol server that turns your Obsidian vault into a reliable data source for any MCP-compatible AI client — built from scratch with OWASP Top 10 controls and full audit logging.
 
@@ -54,6 +56,9 @@ There are plugins that put Claude *inside* Obsidian. This is the inverse, and it
 | `edit_note` | Overwrite an existing note (previous content goes to the audit log) |
 | `delete_note` | Delete a note — **requires `confirm: true`** (Zod rejects otherwise) |
 | `search_notes` | Full-text / tag search using Obsidian's own search engine |
+| `find_note_by_name` | Find notes by partial name — case-insensitive, no exact path needed |
+| `list_tags` | Enumerate all tags in the vault with usage count; sortable by name or frequency |
+| `create_backlinks` | Add `[[wikilinks]]` to a `## Relacionadas` section in a note — explicit and auditable |
 
 ---
 
@@ -106,7 +111,7 @@ Open `%APPDATA%\Claude\claude_desktop_config.json` on Windows (or `~/Library/App
 
 > **Windows tip:** if `npx` fails silently, switch `"command": "npx"` to `"command": "npx.cmd"`. Some Claude Desktop builds don't resolve bare `npx` on PATH.
 
-Restart Claude Desktop (tray → **Quit**, then reopen) and the 6 tools will show up under `obsidian-secure`.
+Restart Claude Desktop (tray → **Quit**, then reopen) and the 9 tools will show up under `obsidian-secure`.
 
 ---
 
@@ -152,7 +157,7 @@ If your workflow lives inside Obsidian's sidebar, plugins like [`obsidian-claude
 |---|---|---|
 | Where the AI lives | Sidebar inside Obsidian | Claude Desktop (or any MCP client) |
 | Setup | `git clone` + `bun build` | `npx obsidian-mcp-secure` |
-| Tools | Read/Write/Edit + Bash + Grep + Glob + WebFetch | 6 purpose-built, Zod-validated tools |
+| Tools | Read/Write/Edit + Bash + Grep + Glob + WebFetch | 9 purpose-built, Zod-validated tools |
 | Security posture | Full shell access to dev machine | Tight allowlist, audited, OWASP Top 10 |
 | Distribution | Manual clone, requires Bun | npm + official MCP Registry |
 | Composability with other sources | Inside its own sandbox | Any MCP-compatible client can mix it with fetch, GitHub, filesystem, etc. |
@@ -175,9 +180,16 @@ Both are valid — they occupy different niches.
 
 ## 🗺️ Roadmap
 
-- [ ] `find_note_by_name` — fuzzy match when the user says *"my note about API"* without knowing the exact path
-- [ ] `create_backlinks` — connect related notes automatically (explicit, auditable)
-- [ ] `list_tags` — enumerate all tags in the vault
+### ✅ Shipped in v1.1.0
+
+- [x] `find_note_by_name` — partial, case-insensitive name match across the entire vault
+- [x] `create_backlinks` — connect related notes with `[[wikilinks]]` (explicit, auditable)
+- [x] `list_tags` — enumerate all tags in the vault with usage count
+- [x] Unit test suite (67 tests — utils, handlers, HTTP client) with Vitest
+- [x] CI pipeline on every PR: tests + coverage + `npm audit` + static security analysis
+
+### 🔜 Up next
+
 - [ ] DXT package for one-click install in Claude Desktop
 - [ ] Smithery listing
 - [ ] Read-only mode flag for shared / multi-user setups
