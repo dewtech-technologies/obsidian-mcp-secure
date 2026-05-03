@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": ["apiKey"],
+  "properties": {
+    "apiKey": {
+      "type": "string",
+      "title": "Obsidian API Key",
+      "description": "API key from the Local REST API plugin (Settings → Community Plugins → Local REST API)",
+      "x-sensitive": true
+    },
+    "host": {
+      "type": "string",
+      "title": "Obsidian Host",
+      "description": "Only 127.0.0.1 and localhost are accepted.",
+      "default": "http://127.0.0.1"
+    },
+    "port": {
+      "type": "number",
+      "title": "Obsidian Port",
+      "default": 27123,
+      "minimum": 1,
+      "maximum": 65535
+    }
+  }
+}

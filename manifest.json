@@ -35,15 +35,15 @@
   },
 
   "tools": [
-    { "name": "read_note",         "description": "Read a note by path" },
-    { "name": "list_notes",        "description": "List files/folders in the vault or a subdirectory" },
-    { "name": "create_note",       "description": "Create a new .md note" },
-    { "name": "edit_note",         "description": "Overwrite an existing note (previous content goes to the audit log)" },
-    { "name": "delete_note",       "description": "Delete a note — requires confirm: true" },
-    { "name": "search_notes",      "description": "Full-text / tag search using Obsidian's own search engine" },
-    { "name": "find_note_by_name", "description": "Find notes by partial name — case-insensitive, no exact path needed" },
-    { "name": "list_tags",         "description": "Enumerate all tags in the vault with usage count" },
-    { "name": "create_backlinks",  "description": "Add [[wikilinks]] to connect related notes in a Relacionadas section" }
+    { "name": "read_note",        "description": "Read a note by path" },
+    { "name": "list_notes",       "description": "List files/folders in the vault or a subdirectory" },
+    { "name": "create_note",      "description": "Create a new .md note" },
+    { "name": "edit_note",        "description": "Overwrite an existing note (previous content goes to the audit log)" },
+    { "name": "delete_note",      "description": "Delete a note — requires confirm: true" },
+    { "name": "search_notes",     "description": "Full-text / tag search using Obsidian's own search engine" },
+    { "name": "find_note_by_name","description": "Find notes by partial name — case-insensitive, searches full path" },
+    { "name": "list_tags",        "description": "Enumerate all tags in the vault with usage count" },
+    { "name": "create_backlinks", "description": "Add [[wikilinks]] to connect related notes in a Relacionadas section" }
   ],
 
   "user_config": {
