@@ -180,17 +180,25 @@ Both are valid — they occupy different niches.
 
 ## 🗺️ Roadmap
 
+### ✅ Shipped in v1.2.1
+
+- [x] Bug fix: `find_note_by_name` searches full path (folder + filename)
+- [x] Bug fix: `list_tags` normalizes all API response formats (object, array of strings, array of objects with `tagCount`/`taggedFilesCount`)
+
+### ✅ Shipped in v1.2.0
+
+- [x] DXT package for one-click install in Claude Desktop (`npm run build:dxt`)
+
 ### ✅ Shipped in v1.1.0
 
 - [x] `find_note_by_name` — partial, case-insensitive name match across the entire vault
 - [x] `create_backlinks` — connect related notes with `[[wikilinks]]` (explicit, auditable)
 - [x] `list_tags` — enumerate all tags in the vault with usage count
-- [x] Unit test suite (67 tests — utils, handlers, HTTP client) with Vitest
+- [x] Unit test suite (70 tests — utils, handlers, HTTP client) with Vitest
 - [x] CI pipeline on every PR: tests + coverage + `npm audit` + static security analysis
 
 ### 🔜 Up next
 
-- [ ] DXT package for one-click install in Claude Desktop
 - [ ] Smithery listing
 - [ ] Read-only mode flag for shared / multi-user setups
 
