@@ -6,7 +6,9 @@ logs/
 Thumbs.db
 mcp-publisher.exe
 
-# DXT build artifacts
+# Build artifacts
 .dxt-build/
+.smithery-build/
 *.dxt
+*.mcpb
 coverage/

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Gradiente roxo Obsidian -->
+    <linearGradient id="crystalTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C4A0E8"/>
+      <stop offset="100%" stop-color="#7B4FBB"/>
+    </linearGradient>
+    <linearGradient id="crystalLeft" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9B6FD4"/>
+      <stop offset="100%" stop-color="#4A1D96"/>
+    </linearGradient>
+    <linearGradient id="crystalRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A87FDC"/>
+      <stop offset="100%" stop-color="#311B7A"/>
+    </linearGradient>
+    <!-- Gradiente verde Dewtech -->
+    <linearGradient id="dGreen" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#6DCC72"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+    <!-- Fundo -->
+    <radialGradient id="bgGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fundo circular escuro (estilo Dewtech) -->
+  <circle cx="256" cy="256" r="256" fill="url(#bgGrad)"/>
+
+  <!-- ── CRISTAL (estilo Obsidian) ───────────────────────────────────────── -->
+  <!-- Faceta topo (clara) -->
+  <polygon points="256,62  374,194  256,204  138,194"
+           fill="url(#crystalTop)"/>
+  <!-- Faceta esquerda (média) -->
+  <polygon points="138,194  256,204  196,408  96,296"
+           fill="url(#crystalLeft)"/>
+  <!-- Faceta direita (mais escura) -->
+  <polygon points="374,194  256,204  316,408  416,296"
+           fill="url(#crystalRight)"/>
+  <!-- Faceta base (sombra profunda) -->
+  <polygon points="196,408  256,204  316,408"
+           fill="#1E0B5E" opacity="0.95"/>
+  <!-- Brilho no topo -->
+  <polygon points="256,62  320,140  256,148  192,140"
+           fill="#DCC8F4" opacity="0.55"/>
+
+  <!-- ── LETRA D (estilo Dewtech) centrada no cristal ───────────────────── -->
+  <!-- D exterior -->
+  <path d="M185,168
+           L185,344
+           Q185,362 203,362
+           L268,362
+           Q372,362 372,256
+           Q372,150 268,150
+           L203,150
+           Q185,150 185,168 Z"
+        fill="url(#dGreen)"/>
+
+  <!-- D interior (vazio) -->
+  <path d="M228,196
+           L265,196
+           Q328,196 328,256
+           Q328,316 265,316
+           L228,316 Z"
+        fill="#0a0a0a" opacity="0.88"/>
+
+  <!-- Entalhe folha/angular (marca Dewtech) -->
+  <path d="M228,196
+           L228,316
+           Q195,280 195,256
+           Q195,228 228,196 Z"
+        fill="#0a0a0a" opacity="0.75"/>
+</svg>

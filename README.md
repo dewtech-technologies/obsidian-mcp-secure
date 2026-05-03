@@ -7,6 +7,7 @@
 [![npm audit](https://img.shields.io/badge/npm%20audit-0%20vulnerabilities-brightgreen)](package.json)
 [![CI](https://github.com/dewtech-technologies/obsidian-mcp-secure/actions/workflows/ci.yml/badge.svg)](https://github.com/dewtech-technologies/obsidian-mcp-secure/actions/workflows/ci.yml)
 [![coverage](https://img.shields.io/badge/coverage-unit%20tested-brightgreen)](test/)
+[![Smithery](https://smithery.ai/badge/wleandro-oliveira/obsidian-mcp-secure)](https://smithery.ai/servers/wleandro-oliveira/obsidian-mcp-secure)
 
 > Secure Model Context Protocol server that turns your Obsidian vault into a reliable data source for any MCP-compatible AI client — built from scratch with OWASP Top 10 controls and full audit logging.
 
