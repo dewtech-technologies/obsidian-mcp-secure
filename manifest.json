@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "obsidian-mcp-secure",
   "display_name": "Obsidian MCP Secure",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Secure MCP server that turns your Obsidian vault into a reliable data source for Claude Desktop — OWASP Top 10 controls and full audit logging.",
   "long_description": "Bridge between Claude Desktop and Obsidian via the Local REST API plugin. Provides 9 tools (read, list, create, edit, delete, search, find by name, list tags, create backlinks) with path traversal blocking, Zod input validation, 512 KB payload limits, localhost-only connections, and a full audit log with rotation.",
   "author": {

@@ -3,6 +3,14 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.2.2] — 2026-05-03
+
+### Corrigido
+- **Startup sem API key** — o servidor não faz mais `process.exit(1)` na inicialização quando `OBSIDIAN_API_KEY` não está definida. A validação foi movida para o momento da chamada das tools em `client.js`, permitindo que scanners MCP (como o Smithery) façam introspecção das tools sem credenciais.
+- **Smithery listing** — adicionado fallback `|| "scan-placeholder"` no `smithery.yaml` para que o scanner do Smithery consiga iniciar o servidor. Adicionado `.well-known/mcp/server-card.json` com definição estática das tools e configSchema.
+
+---
+
 ## [1.2.1] — 2026-05-03
 
 ### Corrigido
