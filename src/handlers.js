@@ -120,7 +120,7 @@ export function makeHandlers(request, audit) {
 
   // ── find_note_by_name ─────────────────────────────────────────────────────────
   // GET /vault/ retorna { files: ["path/to/Note.md", ...] } — lista recursiva de
-  // todos os arquivos do vault. Filtramos pelo basename (insensível a case).
+  // todos os arquivos do vault. Busca no path completo (pasta + nome do arquivo).
   async function find_note_by_name({ name, limit }) {
     try {
       const safeName = sanitizeQuery(name);
@@ -137,7 +137,7 @@ export function makeHandlers(request, audit) {
 
       const lower = safeName.toLowerCase();
       const matches = files
-        .filter((f) => typeof f === "string" && f.split("/").pop().toLowerCase().includes(lower))
+        .filter((f) => typeof f === "string" && f.toLowerCase().includes(lower))
         .slice(0, limit);
 
       audit("find_note_by_name", { name: safeName, limit, found: matches.length }, "ok");
@@ -154,16 +154,26 @@ export function makeHandlers(request, audit) {
   }
 
   // ── list_tags ─────────────────────────────────────────────────────────────────
-  // GET /tags/ retorna { "#tag": count, ... } (Obsidian Local REST API v2+)
+  // GET /tags/ pode retornar:
+  //   • objeto  { "#tag": count, ... }            — Local REST API v1
+  //   • array   [{ tag, tagCount, ... }, ...]     — Local REST API v2+
+  //   • array   ["#tag", ...]                     — versões antigas
   async function list_tags({ sort = "name" }) {
     try {
       const data = await request("GET", "/tags/");
 
       let tags = [];
       if (data && typeof data === "object" && !Array.isArray(data)) {
+        // Formato objeto { "#tag": count }
         tags = Object.entries(data).map(([tag, count]) => ({ tag, count }));
       } else if (Array.isArray(data)) {
-        tags = data.map((t) => (typeof t === "string" ? { tag: t, count: null } : t));
+        tags = data.map((t) => {
+          if (typeof t === "string") return { tag: t, count: null };
+          // Normaliza campos de diferentes versões da API
+          const tag   = t.tag ?? t.name ?? t.tagName ?? t.label ?? Object.keys(t)[0] ?? "";
+          const count = t.count ?? t.tagCount ?? t.taggedFilesCount ?? t.frequency ?? null;
+          return { tag, count };
+        });
       }
 
       if (sort === "count") {
