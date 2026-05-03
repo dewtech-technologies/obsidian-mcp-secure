@@ -3,6 +3,21 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.1.0] — 2026-05-03
+
+### Adicionado
+- Ferramenta `find_note_by_name` — busca parcial e insensível a maiúsculas pelo nome da nota, sem necessidade de conhecer o caminho exato
+- Ferramenta `list_tags` — lista todas as tags do vault com contagem de ocorrências; ordenável por nome ou frequência
+- Ferramenta `create_backlinks` — adiciona `[[wikilinks]]` em uma seção `## Relacionadas` na nota de origem (cria a seção se não existir)
+- Suite de testes unitários com Vitest: 67 testes cobrindo utils, handlers e HTTP client
+- Pipeline de CI no GitHub Actions (executa a cada PR): testes + cobertura + `npm audit` + análise estática de segurança
+
+### Refatorado
+- `src/server.js` separado em módulos independentes (`src/utils.js`, `src/client.js`, `src/handlers.js`) para facilitar testes e manutenção
+- Handlers das tools agora usam injeção de dependência para o cliente HTTP, eliminando a necessidade de mocks globais nos testes
+
+---
+
 ## [1.0.4] — 2026-04-24
 
 ### Corrigido (crítico)
