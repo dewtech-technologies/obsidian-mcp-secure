@@ -3,6 +3,14 @@
 Todas as mudanças notáveis serão documentadas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
+## [1.2.1] — 2026-05-03
+
+### Corrigido
+- **`find_note_by_name`** agora busca no **path completo** (pasta + nome do arquivo), não apenas no basename. Antes, buscar "pentest" não encontrava `Projetos/fermio-pentest-ai/PRODUTO.md` porque "pentest" está no nome da pasta, não no arquivo.
+- **`list_tags`** normaliza múltiplos formatos de resposta da API do Obsidian Local REST API: objeto `{ "#tag": count }`, array de strings e array de objetos com campos `tagCount`, `taggedFilesCount` ou `frequency` (compatibilidade com diferentes versões do plugin).
+
+---
+
 ## [1.1.0] — 2026-05-03
 
 ### Adicionado
