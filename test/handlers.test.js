@@ -193,12 +193,19 @@ describe("find_note_by_name", () => {
     expect(res.content[0].text.split("\n")).toHaveLength(3);
   });
 
-  it("filtra apenas pelo basename, não pelo path completo", async () => {
+  it("busca no path completo — encontra por nome de pasta", async () => {
     const { request, h } = setup();
-    // "Projetos" está no path mas não no basename
-    request.mockResolvedValue({ files: ["Projetos/Ideias.md"] });
-    const res = await h.find_note_by_name({ name: "Projetos", limit: 20 });
-    expect(res.content[0].text).toContain("Nenhuma nota");
+    // "pentest" está na pasta, não no nome do arquivo
+    request.mockResolvedValue({ files: [
+      "Projetos/fermio-pentest-ai/PRODUTO.md",
+      "Projetos/fermio-pentest-ai/IDEIA-BACKEND.md",
+      "Projetos/Outros.md",
+    ]});
+    const res = await h.find_note_by_name({ name: "pentest", limit: 20 });
+    const lines = res.content[0].text.split("\n");
+    expect(lines).toHaveLength(2);
+    expect(lines[0]).toContain("PRODUTO.md");
+    expect(lines[1]).toContain("IDEIA-BACKEND.md");
   });
 });
 
@@ -235,6 +242,36 @@ describe("list_tags", () => {
     request.mockResolvedValue({});
     const res = await h.list_tags({ sort: "name" });
     expect(res.content[0].text).toContain("Nenhuma tag");
+  });
+
+  it("normaliza array de objetos com campo tagCount (API v2)", async () => {
+    const { request, h } = setup();
+    request.mockResolvedValue([
+      { tag: "#projeto", tagCount: 5 },
+      { tag: "#reuniao", tagCount: 8 },
+    ]);
+    const res = await h.list_tags({ sort: "count" });
+    const lines = res.content[0].text.split("\n");
+    expect(lines[0]).toContain("#reuniao (8)");
+    expect(lines[1]).toContain("#projeto (5)");
+  });
+
+  it("normaliza array de objetos com campo taggedFilesCount", async () => {
+    const { request, h } = setup();
+    request.mockResolvedValue([
+      { tag: "#ideia", taggedFilesCount: 3 },
+    ]);
+    const res = await h.list_tags({ sort: "name" });
+    expect(res.content[0].text).toBe("#ideia (3)");
+  });
+
+  it("normaliza array de strings simples", async () => {
+    const { request, h } = setup();
+    request.mockResolvedValue(["#alpha", "#beta"]);
+    const res = await h.list_tags({ sort: "name" });
+    const lines = res.content[0].text.split("\n");
+    expect(lines[0]).toBe("#alpha");
+    expect(lines[1]).toBe("#beta");
   });
 
   it("retorna erro quando API falha", async () => {
