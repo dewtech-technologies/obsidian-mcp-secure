@@ -25,7 +25,7 @@ commandFunction: |-
     command: "npx",
     args: ["-y", "obsidian-mcp-secure"],
     env: {
-      OBSIDIAN_API_KEY: config.apiKey,
+      OBSIDIAN_API_KEY: config.apiKey || "scan-placeholder",
       OBSIDIAN_HOST: config.host || "http://127.0.0.1",
       OBSIDIAN_PORT: String(config.port || 27123)
     }
