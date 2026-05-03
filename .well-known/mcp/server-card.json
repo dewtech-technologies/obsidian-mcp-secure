@@ -1,0 +1,135 @@
+{
+  "name": "obsidian-mcp-secure",
+  "version": "1.2.1",
+  "description": "Secure MCP server that turns your Obsidian vault into a reliable data source for Claude Desktop — OWASP Top 10 controls and full audit logging.",
+  "tools": [
+    {
+      "name": "read_note",
+      "description": "Read a note by path",
+      "inputSchema": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string", "description": "Note path, e.g. Projetos/MyNote.md" }
+        }
+      }
+    },
+    {
+      "name": "list_notes",
+      "description": "List files/folders in the vault or a subdirectory",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "directory": { "type": "string", "description": "Directory to list (empty = root)" }
+        }
+      }
+    },
+    {
+      "name": "create_note",
+      "description": "Create a new .md note",
+      "inputSchema": {
+        "type": "object",
+        "required": ["path", "content"],
+        "properties": {
+          "path":    { "type": "string", "description": "Path of the note to create, e.g. Projetos/New.md" },
+          "content": { "type": "string", "description": "Markdown content" }
+        }
+      }
+    },
+    {
+      "name": "edit_note",
+      "description": "Overwrite an existing note (previous content goes to the audit log)",
+      "inputSchema": {
+        "type": "object",
+        "required": ["path", "content"],
+        "properties": {
+          "path":    { "type": "string", "description": "Path of the note to edit" },
+          "content": { "type": "string", "description": "New Markdown content" }
+        }
+      }
+    },
+    {
+      "name": "delete_note",
+      "description": "Delete a note — requires confirm: true",
+      "inputSchema": {
+        "type": "object",
+        "required": ["path", "confirm"],
+        "properties": {
+          "path":    { "type": "string",  "description": "Path of the note to delete" },
+          "confirm": { "type": "boolean", "description": "Must be true to confirm deletion", "enum": [true] }
+        }
+      }
+    },
+    {
+      "name": "search_notes",
+      "description": "Full-text / tag search using Obsidian's own search engine",
+      "inputSchema": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+          "query": { "type": "string",  "description": "Search term or tag, e.g. #project or keyword" },
+          "limit": { "type": "number",  "description": "Max results (1-50)", "minimum": 1, "maximum": 50, "default": 20 }
+        }
+      }
+    },
+    {
+      "name": "find_note_by_name",
+      "description": "Find notes by partial name — case-insensitive, searches full path",
+      "inputSchema": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name":  { "type": "string", "description": "Partial note name or folder, e.g. 'pentest' or 'API'" },
+          "limit": { "type": "number", "description": "Max results (1-50)", "minimum": 1, "maximum": 50, "default": 20 }
+        }
+      }
+    },
+    {
+      "name": "list_tags",
+      "description": "Enumerate all tags in the vault with usage count",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "sort": { "type": "string", "description": "Sort by name or count", "enum": ["name", "count"], "default": "name" }
+        }
+      }
+    },
+    {
+      "name": "create_backlinks",
+      "description": "Add [[wikilinks]] to connect related notes in a Relacionadas section",
+      "inputSchema": {
+        "type": "object",
+        "required": ["source_path", "target_paths"],
+        "properties": {
+          "source_path":  { "type": "string", "description": "Note that will receive the backlinks" },
+          "target_paths": { "type": "array",  "items": { "type": "string" }, "description": "Notes to link to", "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "configSchema": {
+    "type": "object",
+    "required": ["apiKey"],
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "title": "Obsidian API Key",
+        "description": "API key from the Local REST API plugin (Settings → Community Plugins → Local REST API)",
+        "x-sensitive": true
+      },
+      "host": {
+        "type": "string",
+        "title": "Obsidian Host",
+        "description": "Only 127.0.0.1 and localhost are accepted.",
+        "default": "http://127.0.0.1"
+      },
+      "port": {
+        "type": "number",
+        "title": "Obsidian Port",
+        "default": 27123,
+        "minimum": 1,
+        "maximum": 65535
+      }
+    }
+  }
+}

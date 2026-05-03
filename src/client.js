@@ -19,6 +19,14 @@ export function sanitizeForLog(obj) {
 
 // Se body for string envia como text/markdown; se for objeto, como application/json.
 export async function obsidianRequest(method, endpoint, body = null) {
+  // A02: falha aqui (em tempo de chamada) em vez de no startup,
+  // para permitir introspecção de tools por scanners MCP sem credenciais.
+  if (!CONFIG.apiKey) {
+    throw new Error(
+      "OBSIDIAN_API_KEY não definida. Configure a variável de ambiente antes de usar as tools."
+    );
+  }
+
   const url = `${CONFIG.host}:${CONFIG.port}${endpoint}`;
 
   // Valida que a URL é apenas localhost (A05)

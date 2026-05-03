@@ -33,10 +33,10 @@ const CONFIG = {
   logDir:  process.env.LOG_DIR || path.join(__dirname, "..", "logs"),
 };
 
-if (!CONFIG.apiKey) {
-  console.error("[FATAL] OBSIDIAN_API_KEY não definida no .env");
-  process.exit(1);
-}
+// A02: API key é obrigatória para chamadas reais, mas não crashamos no startup
+// para que scanners/introspectores MCP (ex: Smithery) consigam listar as tools.
+// O handler lança erro se a key não estiver presente quando a tool é chamada.
+const MISSING_API_KEY = !CONFIG.apiKey;
 
 // ─── AUDIT LOGGER (A09) ──────────────────────────────────────────────────────
 if (!fs.existsSync(CONFIG.logDir)) fs.mkdirSync(CONFIG.logDir, { recursive: true });
