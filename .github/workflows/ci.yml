@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Testes unitários + cobertura ────────────────────────────────────────────
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  # ── Auditoria de vulnerabilidades ────────────────────────────────────────────
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install production dependencies only
+        run: npm ci --omit=dev
+
+      - name: Audit production dependencies
+        run: npm audit --audit-level=moderate
+
+  # ── Lint de segurança estático ───────────────────────────────────────────────
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for known vulnerable patterns
+        run: |
+          echo "Verificando padrões inseguros conhecidos..."
+          # Bloqueia eval/exec acidentais no código fonte
+          if grep -rn --include="*.js" -E "(eval\s*\(|new Function|child_process)" src/; then
+            echo "ERRO: padrão inseguro detectado em src/"
+            exit 1
+          fi
+          echo "Nenhum padrão inseguro detectado."
+
+      - name: Verify API key is never hardcoded
+        run: |
+          if grep -rn --include="*.js" -E "sk-[a-zA-Z0-9]{10,}" src/; then
+            echo "ERRO: possível API key hardcoded detectada"
+            exit 1
+          fi
+          echo "Sem API keys hardcoded detectadas."
