@@ -5,3 +5,8 @@ logs/
 .DS_Store
 Thumbs.db
 mcp-publisher.exe
+
+# DXT build artifacts
+.dxt-build/
+*.dxt
+coverage/

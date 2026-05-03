@@ -1,0 +1,84 @@
+{
+  "manifest_version": "0.3",
+  "name": "obsidian-mcp-secure",
+  "display_name": "Obsidian MCP Secure",
+  "version": "1.1.0",
+  "description": "Secure MCP server that turns your Obsidian vault into a reliable data source for Claude Desktop — OWASP Top 10 controls and full audit logging.",
+  "long_description": "Bridge between Claude Desktop and Obsidian via the Local REST API plugin. Provides 9 tools (read, list, create, edit, delete, search, find by name, list tags, create backlinks) with path traversal blocking, Zod input validation, 512 KB payload limits, localhost-only connections, and a full audit log with rotation.",
+  "author": {
+    "name": "Wanderson Leandro",
+    "email": "wleandro.oliveira@gmail.com",
+    "url": "https://github.com/wleandrooliveira"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dewtech-technologies/obsidian-mcp-secure"
+  },
+  "homepage": "https://github.com/dewtech-technologies/obsidian-mcp-secure#readme",
+  "documentation": "https://github.com/dewtech-technologies/obsidian-mcp-secure#readme",
+  "support": "https://github.com/dewtech-technologies/obsidian-mcp-secure/issues",
+  "license": "MIT",
+  "keywords": ["obsidian", "mcp", "second-brain", "notes", "owasp", "security", "vault"],
+
+  "server": {
+    "type": "node",
+    "entry_point": "src/server.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/src/server.js"],
+      "env": {
+        "OBSIDIAN_API_KEY": "${user_config.api_key}",
+        "OBSIDIAN_HOST":    "${user_config.host}",
+        "OBSIDIAN_PORT":    "${user_config.port}"
+      }
+    }
+  },
+
+  "tools": [
+    { "name": "read_note",         "description": "Read a note by path" },
+    { "name": "list_notes",        "description": "List files/folders in the vault or a subdirectory" },
+    { "name": "create_note",       "description": "Create a new .md note" },
+    { "name": "edit_note",         "description": "Overwrite an existing note (previous content goes to the audit log)" },
+    { "name": "delete_note",       "description": "Delete a note — requires confirm: true" },
+    { "name": "search_notes",      "description": "Full-text / tag search using Obsidian's own search engine" },
+    { "name": "find_note_by_name", "description": "Find notes by partial name — case-insensitive, no exact path needed" },
+    { "name": "list_tags",         "description": "Enumerate all tags in the vault with usage count" },
+    { "name": "create_backlinks",  "description": "Add [[wikilinks]] to connect related notes in a Relacionadas section" }
+  ],
+
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Obsidian API Key",
+      "description": "API key from the Local REST API plugin (Obsidian → Settings → Community Plugins → Local REST API)",
+      "sensitive": true,
+      "required": true
+    },
+    "host": {
+      "type": "string",
+      "title": "Obsidian Host",
+      "description": "Host of the Obsidian Local REST API. Only 127.0.0.1 and localhost are accepted.",
+      "default": "http://127.0.0.1",
+      "required": false
+    },
+    "port": {
+      "type": "number",
+      "title": "Obsidian Port",
+      "description": "Port of the Obsidian Local REST API plugin.",
+      "default": 27123,
+      "min": 1,
+      "max": 65535,
+      "required": false
+    }
+  },
+
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+
+  "privacy_policies": []
+}

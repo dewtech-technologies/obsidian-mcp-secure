@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "audit-deps": "npm audit"
+    "audit-deps": "npm audit",
+    "build:dxt": "node scripts/build-dxt.mjs"
   },
   "keywords": [
     "obsidian",
@@ -28,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dewtech-technologies/obsidian-mcp-secure.git"
+    "url": "git+https://github.com/dewtech-technologies/obsidian-mcp-secure.git"
   },
   "homepage": "https://github.com/dewtech-technologies/obsidian-mcp-secure#readme",
   "bugs": {
@@ -55,6 +56,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@anthropic-ai/mcpb": "^2.1.2",
     "@vitest/coverage-v8": "^3.2.4",
     "vitest": "^3.2.4"
   }

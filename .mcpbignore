@@ -1,0 +1,21 @@
+# Dev-only files — não incluir no pacote DXT
+test/
+coverage/
+logs/
+vitest.config.js
+.env
+.env.*
+!.env.example
+
+# Artefatos de build
+*.dxt
+*.mcpb
+
+# Ferramentas de desenvolvimento
+.github/
+.git/
+
+# Devdependencies (node_modules/.package-lock.json exclui individualmente)
+node_modules/@vitest/
+node_modules/vitest/
+node_modules/@anthropic-ai/
